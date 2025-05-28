@@ -26,15 +26,6 @@ function getTileLabel(width, height) {
   return `${w}x${h}각`;
 }
 
-// 소수점 셋째 자리까지 값이 있으면 올림, 0이면 버림
-function customTileCount(value) {
-  const str = value.toFixed(3);
-  if (str.endsWith("000")) {
-    return Math.floor(value);
-  }
-  return Math.ceil(value);
-}
-
 function Calculator() {
   // 입력값 state
   const [inputs, setInputs] = useState({
@@ -77,7 +68,7 @@ function Calculator() {
     const floorTileArea = (floorTileW * floorTileH) / 1000000;
     // 바닥 타일 장수
     const floorTileCount = floorTileArea
-      ? customTileCount(floorArea / floorTileArea)
+      ? Math.ceil(floorArea / floorTileArea)
       : 0;
     // 바닥 타일 박스 수
     const floorTileBox = floorTileCount
@@ -89,9 +80,7 @@ function Calculator() {
     // 벽 타일 1장 면적 (mm^2 → m^2)
     const wallTileArea = (wallTileW * wallTileH) / 1000000;
     // 벽 타일 장수
-    const wallTileCount = wallTileArea
-      ? customTileCount(wallArea / wallTileArea)
-      : 0;
+    const wallTileCount = wallTileArea ? Math.ceil(wallArea / wallTileArea) : 0;
     // 벽 타일 박스 수
     const wallTileBox = wallTileCount
       ? Math.ceil(wallTileCount / wallBoxCount)
